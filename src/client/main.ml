@@ -1488,7 +1488,29 @@ let gui ?version_string state =
           (Var.map_to_list state.State.current_view ~f:(function
             | Welcome ->
                 dbgf "Showing welc-home" ;
-                [welcome_page ?version_string state ~menu_welcome]
+                [ (let content = Var.create "test" "Content" in
+                   div
+                     [ input
+                         ~a:
+                           [ a_input_type `Text; a_value "hello"
+                           ; a_oninput
+                               Js_of_ocaml.(
+                                 fun ev ->
+                                   Js.Opt.iter ev##.target (fun input ->
+                                       Js.Opt.iter
+                                         (Dom_html.CoerceTo.input input)
+                                         (fun input ->
+                                           let v =
+                                             input##.value |> Js.to_string in
+                                           dbgf "TA inputs: %d bytes: %S"
+                                             (String.length v) v ;
+                                           Var.set content v)) ;
+                                   false) ]
+                         () ;
+                       strong [Reactive.span (Var.map_to_list content ~f:(fun c ->
+                         [code [txt c]]))]
+                     ]); welcome_page ?version_string state ~menu_welcome
+                ]
             | Metadata_uri_editor ->
                 metadata_uri_editor_page state ~metadata_uri_editor
                   ~metadata_uri_code
