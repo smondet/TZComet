@@ -50,11 +50,11 @@ ensure_vendors () {
         echo 'val raw_encode : ?alphabet:Alphabet.t -> string -> string' >> src/base58.mli
     )
     say "Vendoring Lwd++"
-    lwd_commit="cba75b9b71afd15b1f80c507921b96f44495f3f4"
+    lwd_commit="e361cadaccc010831c4cc60fd51ef8fb1848512d"
     if [ -f "local-vendor/lwd/lwd.opam" ] ; then
         say "Already cloned"
     else
-        git clone --depth 10 https://github.com/let-def/lwd.git \
+        git clone --depth 10 https://github.com/let-def/lwd.git -b brr-lwd \
             local-vendor/lwd
     fi
     (
