@@ -91,6 +91,7 @@ eval $(opam env)
 
 build_all () {
     eval $(opam env)
+    opam show base
     mkdir -p _build/website/
     dune build --profile release src/client/main.bc.js
     cp _build/default/src/client/main.bc.js _build/website/main-client.js
